@@ -24,17 +24,20 @@ jobs:
           git config --global user.name "GitHub Action"
 
       - name: Update dist/ from origin:dist
+        id: update-dist
         run: |
           set -e
-          git switch -c chore/update-dist-$(date +%s)
+          BRANCH_NAME="chore/update-dist-$(date +%s)"
+          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          git switch -c "$BRANCH_NAME"
           source ~/.git-subrepo/.rc
           git subrepo pull dist -b dist -r "$(git remote get-url origin)" -u
           git push -u origin HEAD
 
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v6
-        with:
-          title: "chore(dist): pull latest upstream dist into main"
-          body: "Automated subrepo pull of origin:dist into ./dist"
-          branch: ${{ github.ref_name }}-into-main
-          base: main
+      # - name: Create PR
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     title: "chore(dist): pull latest upstream dist into main"
+      #     body: "Automated subrepo pull of origin:dist into ./dist"
+      #     branch: ${{ steps.update-dist.outputs.branch-name }}
+      #     base: main
