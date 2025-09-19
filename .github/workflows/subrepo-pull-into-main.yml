@@ -18,6 +18,11 @@ jobs:
         run: |
           git clone https://github.com/ingydotnet/git-subrepo ~/.git-subrepo
 
+      - name: Set up Git user
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
       - name: Update dist/ from origin:dist
         run: |
           set -e
