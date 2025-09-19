@@ -4,9 +4,9 @@
 ; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
 ;
 [subrepo]
-	remote = git@github.com:pmalacho-mit/subrepo-dependency-management-example.git
+	remote = https://github.com/pmalacho-mit/subrepo-dependency-management-example
 	branch = dist
-	commit = 52fb8068e0ada60467cf95a9dc2a16f7408f6dc5
+	commit = 572d7c71a24e0141c28af1af7d432a952a0adcac
 	parent = 2b64d0ce49c0d05f5b0a7cfe538c2677d7bc6b8e
 	method = merge
 	cmdver = 0.4.9
