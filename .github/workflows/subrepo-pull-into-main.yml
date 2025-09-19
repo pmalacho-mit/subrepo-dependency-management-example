@@ -17,12 +17,12 @@ jobs:
       - name: Install git-subrepo
         run: |
           git clone https://github.com/ingydotnet/git-subrepo ~/.git-subrepo
-          source ~/.git-subrepo/.rc
 
       - name: Update dist/ from origin:dist
         run: |
           set -e
           git switch -c chore/update-dist-$(date +%s)
+          source ~/.git-subrepo/.rc
           git subrepo pull dist -b dist -r "$(git remote get-url origin)" -u
           git push -u origin HEAD
 
