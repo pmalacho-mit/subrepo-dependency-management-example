@@ -1,4 +1,4 @@
-import { add, subtract, multiply, divide, exponentiate } from "./index";
+import { add, subtract, multiply, divide, exponentiate, square } from "./index";
 import { expect, test } from "vitest";
 
 test("adds 1 + 2 to equal 3", () => {
@@ -19,4 +19,8 @@ test("divides 10 / 2 to equal 5", () => {
 
 test("exponentiates 2 ** 3 to equal 8", () => {
   expect(exponentiate(2, 3)).toBe(8);
+});
+
+test("squares 4 to equal 16", () => {
+  expect(square(4)).toBe(16);
 });

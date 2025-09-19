@@ -22,14 +22,16 @@ jobs:
 
       - name: Set up Git user
         run: |
-          git config --global user.email "${{ github.event.pusher.email }}"
-          git config --global user.name "${{ github.event.pusher.name }}"
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Configure Git credentials
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
       - name: Pull (to integrate) then push
         run: |
           set -e
-          # Ensure .gitrepo tracks our own repo's dist branch
           source ~/.git-subrepo/.rc
-          REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-          git subrepo pull dist -b dist -r "$REPO_URL" -u || true
-          git subrepo push dist -b dist -r "$REPO_URL"
+          git subrepo pull dist -b dist -r "$(git remote get-url origin)" -u || true
+          git subrepo push dist -b dist -r "$(git remote get-url origin)"
