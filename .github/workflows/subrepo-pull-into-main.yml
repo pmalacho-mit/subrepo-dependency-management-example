@@ -34,10 +34,10 @@ jobs:
           git subrepo pull dist -b dist -r "$(git remote get-url origin)" -u
           git push -u origin HEAD
 
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v6
-        with:
-          title: "chore(dist): pull latest upstream dist into main"
-          body: "Automated subrepo pull of origin:dist into ./dist"
-          branch: ${{ steps.update-dist.outputs.branch-name }}
-          base: main
+      # - name: Create PR
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     title: "chore(dist): pull latest upstream dist into main"
+      #     body: "Automated subrepo pull of origin:dist into ./dist"
+      #     branch: ${{ steps.update-dist.outputs.branch-name }}
+      #     base: main
