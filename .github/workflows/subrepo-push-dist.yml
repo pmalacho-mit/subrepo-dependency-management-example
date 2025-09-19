@@ -11,11 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
+
       - name: Install git-subrepo
         run: |
           git clone https://github.com/ingydotnet/git-subrepo ~/.git-subrepo
           source ~/.git-subrepo/.rc
           git subrepo --version
+
+      - name: Set up Git user
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
       - name: Pull (to integrate) then push
         run: |
           set -e
