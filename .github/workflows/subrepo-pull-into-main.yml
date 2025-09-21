@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0, ref: main }
+        with:
+          fetch-depth: 0
+          ref: main
 
       - name: Install git-subrepo
         run: |
@@ -24,22 +26,24 @@ jobs:
           git config --global user.name "GitHub Action"
 
       - name: Generate branch name
+        id: generate-branch-name
         run: |
           BRANCH_NAME="chore/update-dist-$(date +%s)"
-          echo "branch-name=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "Using branch name: $BRANCH_NAME"
 
       - name: Update dist/ from origin:dist
-        id: update-dist
         run: |
           set -e
-          git switch -c "$${{ steps.update-dist.outputs.branch-name }}"
+          git switch -c "$${{ steps.generate-branch-name.outputs.branch-name }}"
           source ~/.git-subrepo/.rc
           git subrepo pull dist --branch dist --remote "$(git remote get-url origin)" --update --verbose
           git push -u origin HEAD
 
       - name: Create PR
         run: |
-          TITLE="chore(dist): pull latest upstream dist into main"
-          BODY="Automated subrepo pull of origin:dist into ./dist"
-          gh pr create --base main --head ${{ steps.update-dist.outputs.branch-name }} --title "$TITLE" --body "$BODY"
+          gh pr create \
+            --base main \
+            --head "${{ steps.generate-branch-name.outputs.branch-name }}" \
+            --title "chore(dist): pull latest upstream dist into main" \
+            --body "Automated subrepo pull of origin:dist into ./dist"
