@@ -28,7 +28,7 @@ jobs:
       - name: Generate branch name
         id: generate-branch-name
         run: |
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          TIMESTAMP=$(date +%Y_%m_%d-_%H_%M_%S)
           BRANCH_NAME="chore/update-dist-${TIMESTAMP}"
           echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "Using branch name: $BRANCH_NAME"
