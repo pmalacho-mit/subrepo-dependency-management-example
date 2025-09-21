@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/pmalacho-mit/subrepo-dependency-management-example
 	branch = dist
-	commit = 571fbfe0445fefd9befc655d132ce1fe12e60565
+	commit = b934d682b1227c2ef6515f0b9d10c46e88ab0ec1
 	parent = 2b64d0ce49c0d05f5b0a7cfe538c2677d7bc6b8e
 	method = merge
 	cmdver = 0.4.9
