@@ -1,7 +1,7 @@
 name: subrepo-pull-into-main
 on:
   push:
-    branches: [dist] # upstream edited directly
+    branches: [dist]
 
 permissions:
   contents: write
@@ -23,18 +23,23 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
 
+      - name: Generate branch name
+        run: |
+          BRANCH_NAME="chore/update-dist-$(date +%s)"
+          echo "branch-name=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "Using branch name: $BRANCH_NAME"
+
       - name: Update dist/ from origin:dist
+        id: update-dist
         run: |
           set -e
-          git switch -c chore/update-dist-$(date +%s)
+          git switch -c "$${{ steps.update-dist.outputs.branch-name }}"
           source ~/.git-subrepo/.rc
-          git subrepo pull dist -b dist -r "$(git remote get-url origin)" -u
+          git subrepo pull dist --branch dist --remote "$(git remote get-url origin)" --update --verbose
           git push -u origin HEAD
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v6
-        with:
-          title: "chore(dist): pull latest upstream dist into main"
-          body: "Automated subrepo pull of origin:dist into ./dist"
-          branch: ${{ github.ref_name }}-into-main
-          base: main
+        run: |
+          TITLE="chore(dist): pull latest upstream dist into main"
+          BODY="Automated subrepo pull of origin:dist into ./dist"
+          gh pr create --base main --head ${{ steps.update-dist.outputs.branch-name }} --title "$TITLE" --body "$BODY"
