@@ -35,7 +35,7 @@ jobs:
       - name: Update dist/ from origin:dist
         run: |
           set -e
-          git switch -c "$${{ steps.generate-branch-name.outputs.branch-name }}"
+          git switch -c "${{ steps.generate-branch-name.outputs.branch-name }}"
           source ~/.git-subrepo/.rc
           git subrepo pull dist --branch dist --remote "$(git remote get-url origin)" --update --verbose
           git push -u origin HEAD
